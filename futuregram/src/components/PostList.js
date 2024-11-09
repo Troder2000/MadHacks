@@ -1,15 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { db } from '../firebaseConfig';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
 
-function PostList({ posts }) {
+function PostList() {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const postsData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setPosts(postsData);
+    });
+    return unsubscribe;
+  }, []);
+
   return (
     <div>
-      <h2>Your Futuregram Posts</h2>
+      <h2>Futuregram Posts</h2>
       {posts.length === 0 ? (
         <p>No posts yet. Add your first memory!</p>
       ) : (
         <ul>
-          {posts.map((post, index) => (
-            <li key={index}>{post.title} - {post.content}</li>
+          {posts.map((post) => (
+            <li key={post.id}>
+              <h3>{post.title}</h3>
+              <p>{post.content}</p>
+            </li>
           ))}
         </ul>
       )}
