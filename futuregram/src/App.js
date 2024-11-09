@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import LoginPage from './components/LoginPage';
-import Logout from './components/Logout';
-import AddPost from './components/AddPost';
-import PostList from './components/PostList';
+import HomePage from './components/HomePage';
 import './App.css';
 
 function App() {
@@ -17,29 +15,9 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  const appStyle = {
-    backgroundImage: 'url("/background.jpg")',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  };
-
   return (
-    <div style={appStyle}>
-      {user ? (
-        <div>
-          <p>Welcome, {user.email}</p>
-          <Logout />
-          <AddPost />
-          <PostList />
-        </div>
-      ) : (
-        <LoginPage />
-      )}
+    <div>
+      {user ? <HomePage /> : <LoginPage />}
     </div>
   );
 }

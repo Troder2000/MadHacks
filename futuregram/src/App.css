@@ -105,4 +105,94 @@ button:hover {
   letter-spacing: 1px; /* Adds space between letters for a clean look */
 }
 
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #333;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
 
+/* Position header with logo and logout button */
+.app-header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 20px; /* Adds spacing from the right edge */
+}
+
+/* Logo (FutureGram title) styling */
+.app-title {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.8rem;
+  color: #4a90e2;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Small logout button styling */
+.logout-button {
+  padding: 0.3rem 0.8rem;
+  font-size: 0.9rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}
+
+
+/* Add post section */
+.add-post-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.add-post-section button {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+/* Post list section styling */
+.post-list-section {
+  width: 100%;
+  text-align: left;
+}
+
+.post-list-section h3 {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.5rem;
+  color: #4a90e2;
+  margin-bottom: 1rem;
+}
+
+/* Styling each post item for better readability */
+.post-list-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.post-list-section li {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
