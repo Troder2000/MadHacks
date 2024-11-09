@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { auth } from './firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import GoogleLogin from './components/GoogleLogin';
-import EmailLogin from './components/EmailLogin';
+import LoginPage from './components/LoginPage';
 import Logout from './components/Logout';
 import AddPost from './components/AddPost';
 import PostList from './components/PostList';
+import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,21 +17,28 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  const appStyle = {
+    backgroundImage: 'url("/background.jpg")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    minHeight: '100vh',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  };
+
   return (
-    <div>
-      <h1>Futuregram</h1>
+    <div style={appStyle}>
       {user ? (
-        <>
+        <div>
           <p>Welcome, {user.email}</p>
           <Logout />
           <AddPost />
           <PostList />
-        </>
+        </div>
       ) : (
-        <>
-          <GoogleLogin />
-          <EmailLogin />
-        </>
+        <LoginPage />
       )}
     </div>
   );

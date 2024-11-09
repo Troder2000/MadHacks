@@ -13,7 +13,7 @@ function GoogleLogin() {
     }
   };
 
-  return <button onClick={handleGoogleLogin}>Login with Google</button>;
+  return <button onClick={handleGoogleLogin} className="google-login">Login with Google</button>;
 }
 
 export default GoogleLogin;
