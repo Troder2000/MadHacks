@@ -6,29 +6,42 @@ import { useNavigate } from 'react-router-dom';
 
 function AddPostPage() {
   const [fileName, setFileName] = useState('');
+  const [delay, setDelay] = useState(''); // Delay time in minutes
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setFileName(file.name);
-      // You will need to manually save the file in the src/images folder with this name.
     }
+  };
+
+  const handleDelayChange = (e) => {
+    setDelay(e.target.value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      // Calculate the display time based on the delay in minutes
+      const currentTime = new Date();
+      const displayTime = new Date(currentTime.getTime() + delay * 60000);
+
+      // Save file name, delay, and display time to Firebase
       await addDoc(collection(db, 'posts'), {
-        title: new Date().toLocaleString(),
-        fileName, // Store the file name in Firebase
+        title: currentTime.toLocaleString(),
+        fileName,
+        delay: `${delay} minutes`, // Store delay in minutes
+        displayTime: displayTime.toISOString(),
       });
-      console.log('File name added to Firebase');
+
+      console.log('File name and delay added to Firebase');
       setFileName('');
+      setDelay('');
       navigate('/');
     } catch (error) {
-      console.error('Error adding file name to Firebase:', error);
+      console.error('Error adding data to Firebase:', error);
     }
   };
 
@@ -40,7 +53,15 @@ function AddPostPage() {
           type="file"
           onChange={handleFileChange}
         />
-        <button type="submit" disabled={!fileName}>Submit</button>
+        <input
+          type="number"
+          placeholder="Time before it's visible (in minutes)"
+          value={delay}
+          onChange={handleDelayChange}
+          min="0"
+          required
+        />
+        <button type="submit" disabled={!fileName || !delay}>Submit</button>
       </form>
     </div>
   );
