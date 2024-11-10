@@ -1,24 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { auth } from './firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
-import LoginPage from './components/LoginPage';
+// App.js
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
-import './App.css';
+import AddPostPage from './components/AddPostPage'; // New component for adding posts
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
   return (
-    <div>
-      {user ? <HomePage /> : <LoginPage />}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/add-post" element={<AddPostPage />} /> {/* New route for Add Post */}
+      </Routes>
+    </Router>
   );
 }
 
