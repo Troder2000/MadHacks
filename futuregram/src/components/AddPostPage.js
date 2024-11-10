@@ -1,16 +1,7 @@
-// AddPostPage.js
 import React, { useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, addDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
-
-/*
-import DatePicker from 'react-datepicker';
-import TimePicker from 'react-time-picker';
-
-import 'react-datepicker/dist/react-datepicker.css';
-*/
-
 
 function AddPostPage() {
   const backgroundStyle = {
@@ -20,32 +11,13 @@ function AddPostPage() {
     backgroundRepeat: 'no-repeat',
     minHeight: '100vh',
     display: 'flex',
-    //alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   };
 
   const [fileName, setFileName] = useState('');
-  const [delay, setDelay] = useState(''); // Delay time in minutes
+  const [delay, setDelay] = useState('');
   const navigate = useNavigate();
-  
-  /*
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date());
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-  
-  const handleTimeChange = (time) => {
-    setSelectedTime(time);
-  };
-
-  const combinedDateTime = new Date(selectedDate);
-  combinedDateTime.setHours(selectedTime.getHours());
-  combinedDateTime.setMinutes(selectedTime.getMinutes());
-  combinedDateTime.setSeconds(selectedTime.getSeconds());
-
-  */
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -60,17 +32,14 @@ function AddPostPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // Calculate the display time based on the delay in minutes
       const currentTime = new Date();
       const displayTime = new Date(currentTime.getTime() + delay * 60000);
 
-      // Save file name, delay, and display time to Firebase
       await addDoc(collection(db, 'posts'), {
         title: currentTime.toLocaleString(),
         fileName,
-        delay: `${delay} minutes`, // Store delay in minutes
+        delay: `${delay} minutes`,
         displayTime: displayTime.toISOString(),
       });
 
@@ -83,43 +52,43 @@ function AddPostPage() {
     }
   };
 
+  const handleCancel = () => {
+    navigate('/'); // Navigate back to homepage
+  };
+
   return (
     <div style={backgroundStyle}>
-      <div className="add-post-page">
-        
-        <h2>Create a <span className="app-title">FutureGram</span> Time Capsule!</h2>
+      <div className="add-post-page" style={{ backgroundColor: 'rgba(255, 255, 255, 0.85)', padding: '2rem', borderRadius: '8px', maxWidth: '400px', textAlign: 'center' }}>
+        <h2>Create a <span className="app-title" style={{ color: '#3b82f6' }}>FutureGram</span> Time Capsule!</h2>
         <br />
 
         <form onSubmit={handleSubmit}>
           <input
             type="file"
             onChange={handleFileChange}
+            style={{ marginBottom: '15px' }}
           />
-        
-          <br />
           <br />
 
           <input
             type="number"
-            style={{width: "42%"}}
+            style={{ width: "100%", padding: '10px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #ccc' }}
             placeholder="Minutes until capsule opens"
             value={delay}
             onChange={handleDelayChange}
             min="0"
             required
           />
-        
-          {/*
           <br />
-          <br />
-          <p>When would you like your FutureGram to open?</p>
-          
-          <DatePicker selected={selectedDate} onChange={handleDateChange} />
-          <TimePicker value={selectedTime} onChange={handleTimeChange} />
-          <p>Selected date: {combinedDateTime.toString()}</p>
-          */}
-          
-          <button type="submit" style={{width: "10%"}} disabled={!fileName || !delay}>Submit</button>
+
+          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+            <button type="submit" style={{ padding: '10px 20px', fontSize: '1rem', fontWeight: 'bold', backgroundColor: '#3b82f6', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }} disabled={!fileName || !delay}>
+              Submit
+            </button>
+            <button type="button" onClick={handleCancel} style={{ padding: '10px 20px', fontSize: '1rem', fontWeight: 'bold', backgroundColor: '#e53e3e', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
+              Cancel
+            </button>
+          </div>
         </form>
       </div>
     </div>
