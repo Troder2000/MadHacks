@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 import { db } from '../firebaseConfig';
 import { collection, getDocs } from 'firebase/firestore';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import Logout from './Logout';
 import '../App.css';
 
 function HomePage() {
   const [posts, setPosts] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,7 +22,19 @@ function HomePage() {
   }, []);
 
   const handleAddPostClick = () => {
-    navigate('/add-post'); // Navigate to Add Post page when clicked
+    navigate('/add-post');
+  };
+
+  const calculateRemainingTime = (displayTime) => {
+    const currentTime = new Date();
+    const displayDate = new Date(displayTime);
+    const remainingTime = displayDate - currentTime;
+
+    if (remainingTime > 0) {
+      const remainingMinutes = Math.ceil(remainingTime / 60000);
+      return `${remainingMinutes} minutes`;
+    }
+    return 'now';
   };
 
   return (
@@ -39,16 +51,25 @@ function HomePage() {
       <div className="post-list-section">
         <h3>FutureGram Posts</h3>
         <div className="post-list">
-          {posts.map((post, index) => (
-            <div key={index} className="post-item">
-              <p>{post.title}</p>
-              <img
-                src={require(`../images/${post.fileName}`).default} // Path to local image
-                alt={post.fileName}
-                className="post-image"
-              />
-            </div>
-          ))}
+          {posts.map((post, index) => {
+            const remainingTimeText = calculateRemainingTime(post.displayTime);
+
+            return (
+              <div key={index} className="post-item">
+                <p>{post.title}</p>
+                {remainingTimeText !== 'now' ? (
+                  <p>Post will be available in {remainingTimeText}</p>
+                ) : (
+                  <img
+                    src={require(`../images/${post.fileName}`)} // Adjusted image path
+                    alt={post.fileName}
+                    className="post-image"
+                  />
+                
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
